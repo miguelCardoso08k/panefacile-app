@@ -1,0 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Text, View } from "react-native";
+
+import { Card, Metric, PrimaryButton } from "./ui";
+
+export function Receipt({ type }: { type: "order" | "payment" }) {
+  const order = type === "order";
+  return <><Card className="mt-5"><View className="items-center border-b border-neutral-200 pb-5"><View className="h-14 w-14 items-center justify-center rounded-full bg-brand-700"><Ionicons name="restaurant-outline" size={27} color="#F6C65B" /></View><Text className="mt-3 text-base font-bold tracking-[2px] text-brand-900">PANE FACILE</Text><Text className="text-[9px] tracking-[3px] text-gold">PADARIA</Text><Text className="mt-5 text-sm font-bold text-ink">{order ? "COMPROVANTE DE PEDIDO" : "RECIBO DE PAGAMENTO"}</Text><Text className="mt-1 text-xs text-neutral-500">Nº {order ? "PED-2026-000143" : "REC-2026-000089"}</Text></View>
+    <View className="py-5"><Text className="text-xs text-neutral-500">Cliente</Text><Text className="mt-1 font-bold text-ink">Mercado Oliveira</Text><Text className="mt-3 text-xs text-neutral-500">Data</Text><Text className="mt-1 text-sm text-ink">14/07/2026</Text></View>
+    {order ? <View className="border-y border-neutral-200 py-3">{[["Pão Francês", "150 un", "R$ 120,00"], ["Pão de Hambúrguer", "30 pct", "R$ 120,00"], ["Pão de Forma", "15 un", "R$ 85,00"]].map((i) => <View className="flex-row py-2" key={i[0]}><Text className="flex-1 text-xs text-ink">{i[0]}</Text><Text className="w-14 text-xs text-neutral-500">{i[1]}</Text><Text className="text-xs font-bold text-ink">{i[2]}</Text></View>)}</View> : <View className="border-y border-neutral-200 py-4"><Metric label="Valor recebido" value="R$ 340,00" tone="text-brand-700" /><Text className="mt-4 text-xs text-neutral-500">Forma de pagamento: <Text className="font-bold text-ink">Dinheiro</Text></Text><Text className="mt-2 text-xs text-neutral-500">Pedido: <Text className="font-bold text-ink">PED-2026-000143</Text></Text></View>}
+    <View className="pt-5"><View className="flex-row justify-between"><Text className="font-bold text-ink">{order ? "Total" : "Saldo restante"}</Text><Text className="text-lg font-bold text-brand-700">{order ? "R$ 540,00" : "R$ 0,00"}</Text></View><Text className="mt-7 text-center text-xs leading-5 text-neutral-500">Recebemos de Mercado Oliveira a importância descrita neste documento.{`\n\n`}Pane Facile Padaria • Obrigado!</Text></View></Card>
+    <View className="mt-5 flex-row gap-3"><View className="flex-1"><PrimaryButton label="Compartilhar" icon="share-social" secondary /></View><View className="flex-1"><PrimaryButton label="Salvar PDF" icon="document" /></View></View></>;
+}
