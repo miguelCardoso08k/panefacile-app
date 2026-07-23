@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import { BottomNavigation } from "@/components/bottom-navigation";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
@@ -9,14 +11,6 @@ const deliveries = [
   { initials: "MO", name: "Mercado Oliveira", status: "Em produção", date: "Hoje", tone: "green" },
   { initials: "LS", name: "Lanchonete Silva", status: "Pronto", date: "Hoje", tone: "blue" },
   { initials: "RC", name: "Restaurante Central", status: "Confirmado", date: "Amanhã", tone: "gold" },
-];
-
-const navItems: { label: string; icon: IconName; active?: boolean }[] = [
-  { label: "Início", icon: "home", active: true },
-  { label: "Pedidos", icon: "receipt-outline" },
-  { label: "Clientes", icon: "people-outline" },
-  { label: "Produtos", icon: "cube-outline" },
-  { label: "Financeiro", icon: "wallet-outline" },
 ];
 
 function FinancialCard({
@@ -43,12 +37,23 @@ function FinancialCard({
   );
 }
 
-function QuickAction({ icon, label, primary }: { icon: IconName; label: string; primary?: boolean }) {
+function QuickAction({
+  icon,
+  label,
+  onPress,
+  primary,
+}: {
+  icon: IconName;
+  label: string;
+  onPress?: () => void;
+  primary?: boolean;
+}) {
   return (
     <Pressable
       className={`h-12 flex-1 flex-row items-center justify-center rounded-xl border ${
         primary ? "border-brand-700 bg-brand-700" : "border-gold bg-white"
       }`}
+      onPress={onPress}
     >
       <Ionicons name={icon} size={18} color={primary ? "white" : "#B66F00"} />
       <Text className={`ml-2 text-xs font-bold ${primary ? "text-white" : "text-[#9A5D00]"}`}>
@@ -59,8 +64,6 @@ function QuickAction({ icon, label, primary }: { icon: IconName; label: string; 
 }
 
 export default function DashboardScreen() {
-  const insets = useSafeAreaInsets();
-
   return (
     <SafeAreaView className="flex-1 bg-cream" edges={["top"]}>
       <View className="flex-row items-center justify-between px-5 pb-3 pt-2">
@@ -141,24 +144,17 @@ export default function DashboardScreen() {
 
         <Text className="mb-3 mt-7 text-lg font-bold text-ink">Ações rápidas</Text>
         <View className="flex-row gap-3">
-          <QuickAction icon="add" label="Novo pedido" primary />
+          <QuickAction
+            icon="add"
+            label="Novo pedido"
+            onPress={() => router.push("/new-order")}
+            primary
+          />
           <QuickAction icon="repeat-outline" label="Repetir último" />
         </View>
       </ScrollView>
 
-      <View
-        className="flex-row border-t border-neutral-200 bg-white px-2 pt-3"
-        style={{ paddingBottom: Math.max(insets.bottom, 8) }}
-      >
-        {navItems.map((item) => (
-          <Pressable className="flex-1 items-center" key={item.label}>
-            <Ionicons name={item.icon} size={21} color={item.active ? "#075C31" : "#8A918D"} />
-            <Text className={`mt-1 text-[9px] font-semibold ${item.active ? "text-brand-700" : "text-neutral-400"}`}>
-              {item.label}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
+      <BottomNavigation activeTab="home" />
     </SafeAreaView>
   );
 }
