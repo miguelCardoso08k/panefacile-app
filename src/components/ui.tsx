@@ -59,7 +59,15 @@ export function BottomNav({ active }: { active: string }) {
       {tabs.map((item) => {
         const selected = active === item.label;
         return (
-          <Pressable className="flex-1 items-center" key={item.label} onPress={() => router.replace(item.href)}>
+          <Pressable
+            accessibilityRole="tab"
+            accessibilityState={{ selected }}
+            className="flex-1 items-center"
+            key={item.label}
+            onPress={() => {
+              if (!selected) router.replace(item.href);
+            }}
+          >
             <Ionicons name={selected ? item.icon.replace("-outline", "") as IconName : item.icon} size={21} color={selected ? "#075C31" : "#8A918D"} />
             <Text className={`mt-1 text-[9px] font-semibold ${selected ? "text-brand-700" : "text-neutral-400"}`}>{item.label}</Text>
           </Pressable>
