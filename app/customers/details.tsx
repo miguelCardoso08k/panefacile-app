@@ -54,7 +54,7 @@ export default function CustomerDetailsScreen() {
         action={
           <Pressable
             onPress={() =>
-              router.push({ pathname: "/customer-form", params: { id } })
+              router.push({ pathname: "/customers/form", params: { id } })
             }
           >
             <Ionicons name="pencil" size={20} color="#17201B" />
@@ -107,7 +107,7 @@ export default function CustomerDetailsScreen() {
               key={order.id}
               onPress={() =>
                 router.push({
-                  pathname: "/order-details",
+                  pathname: "/orders/details",
                   params: { id: order.id },
                 })
               }
@@ -137,7 +137,7 @@ export default function CustomerDetailsScreen() {
               label="Novo pedido"
               onPress={() =>
                 router.push({
-                  pathname: "/order-form",
+                  pathname: "/orders/form",
                   params: { customerId: id },
                 })
               }
@@ -150,7 +150,7 @@ export default function CustomerDetailsScreen() {
               secondary
               onPress={() =>
                 router.push({
-                  pathname: "/payment-general",
+                  pathname: "/finance/payment-general",
                   params: { customerId: id },
                 })
               }
@@ -163,7 +163,7 @@ export default function CustomerDetailsScreen() {
             icon="pricetag"
             secondary
             onPress={() =>
-              router.push({ pathname: "/pricing", params: { customerId: id } })
+              router.push({ pathname: "/customers/pricing", params: { customerId: id } })
             }
           />
         </View>

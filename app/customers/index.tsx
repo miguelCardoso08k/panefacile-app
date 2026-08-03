@@ -17,7 +17,7 @@ export default function CustomersScreen() {
             <Pressable
               className={`flex-row items-center py-4 ${index < customers.length - 1 ? "border-b border-neutral-100" : ""}`}
               key={customer.id}
-              onPress={() => router.push({ pathname: "/customer-details", params: { id: customer.id } })}
+              onPress={() => router.push({ pathname: "/customers/details", params: { id: customer.id } })}
             >
               <View className="h-11 w-11 items-center justify-center rounded-full bg-brand-700">
                 <Text className="text-xs font-bold text-white">{customer.tradeName.split(" ").map((word) => word[0]).join("").slice(0, 2)}</Text>
@@ -31,7 +31,7 @@ export default function CustomersScreen() {
             </Pressable>
           ))}
         </View>
-        <View className="mt-5"><PrimaryButton label="Novo cliente" onPress={() => router.push("/customer-form")} /></View>
+        <View className="mt-5"><PrimaryButton label="Novo cliente" onPress={() => router.push("/customers/form")} /></View>
       </PageScroll>
     </AppScreen>
   );

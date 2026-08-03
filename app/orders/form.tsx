@@ -109,7 +109,7 @@ export default function OrderFormScreen() {
   function submit() {
     if (!canSave) return;
     const id = saveOrder({ id: params.id, customerId, status: current?.status ?? "Rascunho", deliveryDate, dueDate, notes, items, createdAt: current?.createdAt ?? new Date().toLocaleDateString("pt-BR") });
-    router.replace({ pathname: "/order-details", params: { id } });
+    router.replace({ pathname: "/orders/details", params: { id } });
   }
 
   return (

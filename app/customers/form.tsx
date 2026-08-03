@@ -22,7 +22,7 @@ export default function CustomerFormScreen() {
   function submit() {
     if (!tradeName.trim() || !phone.trim()) return Alert.alert("Campos obrigatórios", "Informe o nome fantasia e o telefone.");
     const savedId = saveCustomer({ id, tradeName: tradeName.trim(), legalName, document, contactName, phone, email, address, creditLimit: parseMoney(creditLimit), notes, active: current?.active ?? true });
-    router.replace({ pathname: "/customer-details", params: { id: savedId } });
+    router.replace({ pathname: "/customers/details", params: { id: savedId } });
   }
 
   return <AppScreen><Header title={current ? "Editar cliente" : "Novo cliente"} back /><PageScroll className="pt-5">

@@ -221,7 +221,7 @@ export default function DashboardScreen() {
             icon="add"
             label="Novo pedido"
             primary
-            onPress={() => router.push("/order-form")}
+            onPress={() => router.push("/orders/form")}
           />
         </View>
       </ScrollView>
