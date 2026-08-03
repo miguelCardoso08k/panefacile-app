@@ -41,7 +41,7 @@ function SelectionModal({
         <View className="w-full max-w-lg rounded-3xl bg-white p-5 shadow-lg">
           <View className="h-14 flex-row items-center rounded-2xl border border-neutral-200 px-4">
             <Ionicons name="search-outline" size={22} color="#626864" />
-            <TextInput autoFocus className="h-full flex-1 px-3 text-base text-ink" onChangeText={setQuery} placeholder={`Buscar ${label}`} placeholderTextColor="#A3A3A3" value={query} />
+            <TextInput className="h-full flex-1 px-3 text-base text-ink" onChangeText={setQuery} placeholder={`Buscar ${label}`} placeholderTextColor="#A3A3A3" value={query} />
             {query ? <Pressable onPress={() => setQuery("")}><Ionicons name="close-circle" size={22} color="#7B817D" /></Pressable> : null}
           </View>
           {query.trim() ? <Text className="mt-3 text-xs text-neutral-500">Filtrando {label} que contêm “<Text className="font-bold text-brand-700">{query.trim()}</Text>”</Text> : null}
