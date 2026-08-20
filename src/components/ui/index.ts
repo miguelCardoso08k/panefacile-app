@@ -1,6 +1,5 @@
 export { AppScreen } from "./app-screen";
 export { Badge } from "./badge";
-export { BottomNav } from "./bottom-nav";
 export { Card } from "./card";
 export { Field } from "./field";
 export { Header } from "./header";

@@ -3,33 +3,30 @@ import { router } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { BottomNav } from "@/src/components/ui";
+import { money, useMockData } from "@/src/data/mock-store";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
-const deliveries = [
-  {
-    initials: "MO",
-    name: "Mercado Oliveira",
-    status: "Em produção",
-    date: "Hoje",
-    tone: "green",
-  },
-  {
-    initials: "LS",
-    name: "Lanchonete Silva",
-    status: "Pronto",
-    date: "Hoje",
-    tone: "blue",
-  },
-  {
-    initials: "RC",
-    name: "Restaurante Central",
-    status: "Confirmado",
-    date: "Amanhã",
-    tone: "gold",
-  },
-];
+function parseBrazilianDate(value: string) {
+  const [day, month, year] = value.split("/").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function isSameDay(left: Date, right: Date) {
+  return left.getFullYear() === right.getFullYear()
+    && left.getMonth() === right.getMonth()
+    && left.getDate() === right.getDate();
+}
+
+function initials(value: string) {
+  return value
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
 
 function FinancialCard({
   icon,
@@ -89,6 +86,64 @@ function QuickAction({
 }
 
 export default function DashboardScreen() {
+  const { customers, orders, payments, customerBalance, orderPaid, orderTotal } = useMockData();
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const activeOrders = orders.filter(
+    (order) => order.status !== "Entregue" && order.status !== "Cancelado",
+  );
+  const paymentsToday = payments.filter(
+    (payment) =>
+      !payment.canceled && isSameDay(parseBrazilianDate(payment.paidAt), today),
+  );
+  const receivedToday = paymentsToday
+    .reduce((sum, payment) => sum + payment.amount, 0);
+  const openBalance = customers.reduce(
+    (sum, customer) => sum + customerBalance(customer.id),
+    0,
+  );
+  const overdueBalance = orders
+    .filter(
+      (order) =>
+        order.status !== "Cancelado"
+        && parseBrazilianDate(order.dueDate) < today
+        && orderTotal(order) > orderPaid(order.id),
+    )
+    .reduce(
+      (sum, order) => sum + Math.max(orderTotal(order) - orderPaid(order.id), 0),
+      0,
+    );
+  const deliveries = [...activeOrders]
+    .sort(
+      (left, right) =>
+        parseBrazilianDate(left.deliveryDate).getTime()
+        - parseBrazilianDate(right.deliveryDate).getTime(),
+    )
+    .slice(0, 3)
+    .map((order) => {
+      const customer = customers.find((item) => item.id === order.customerId);
+      const deliveryDate = parseBrazilianDate(order.deliveryDate);
+      let date = order.deliveryDate;
+      if (deliveryDate < today) date = "Atrasada";
+      if (isSameDay(deliveryDate, today)) date = "Hoje";
+      if (isSameDay(deliveryDate, tomorrow)) date = "Amanhã";
+
+      return {
+        initials: initials(customer?.tradeName ?? "Cliente"),
+        name: customer?.tradeName ?? "Cliente não encontrado",
+        status: order.status,
+        date,
+      };
+    });
+  const formattedDate = new Intl.DateTimeFormat("pt-BR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(today);
+
   return (
     <SafeAreaView className="flex-1 bg-cream" edges={["top"]}>
       <View className="flex-row items-center justify-between px-5 pb-3 pt-2">
@@ -121,8 +176,8 @@ export default function DashboardScreen() {
         showsVerticalScrollIndicator={false}
       >
         <Text className="mt-2 text-2xl font-bold text-ink">Olá, Admin! 👋</Text>
-        <Text className="mt-1 text-sm text-neutral-500">
-          Terça-feira, 14 de julho
+        <Text className="mt-1 text-sm capitalize text-neutral-500">
+          {formattedDate}
         </Text>
 
         <View className="mt-5 overflow-hidden rounded-3xl bg-brand-700 p-5">
@@ -135,21 +190,27 @@ export default function DashboardScreen() {
               <Text className="text-xs leading-4 text-brand-100">
                 Pedidos para{`\n`}entregar
               </Text>
-              <Text className="mt-2 text-3xl font-bold text-white">12</Text>
+              <Text className="mt-2 text-3xl font-bold text-white">
+                {activeOrders.length}
+              </Text>
             </View>
             <View className="mx-4 w-px bg-white/20" />
             <View className="flex-1">
               <Text className="text-xs leading-4 text-brand-100">
                 Em{`\n`}produção
               </Text>
-              <Text className="mt-2 text-3xl font-bold text-white">5</Text>
+              <Text className="mt-2 text-3xl font-bold text-white">
+                {orders.filter((order) => order.status === "Em produção").length}
+              </Text>
             </View>
             <View className="mx-4 w-px bg-white/20" />
             <View className="flex-1">
               <Text className="text-xs leading-4 text-brand-100">
                 Pagos{`\n`}hoje
               </Text>
-              <Text className="mt-2 text-3xl font-bold text-white">3</Text>
+              <Text className="mt-2 text-3xl font-bold text-white">
+                {paymentsToday.length}
+              </Text>
             </View>
           </View>
         </View>
@@ -158,21 +219,21 @@ export default function DashboardScreen() {
           <FinancialCard
             icon="cash-outline"
             label="Recebido hoje"
-            value="R$ 1.250,00"
+            value={money(receivedToday)}
             color="#0B6B3A"
             background="#EAF4EE"
           />
           <FinancialCard
             icon="time-outline"
             label="Em aberto"
-            value="R$ 8.740,00"
+            value={money(openBalance)}
             color="#B66F00"
             background="#FFF5DF"
           />
           <FinancialCard
             icon="alert-circle-outline"
             label="Vencido"
-            value="R$ 1.320,00"
+            value={money(overdueBalance)}
             color="#D93636"
             background="#FDEAEA"
           />
@@ -225,7 +286,6 @@ export default function DashboardScreen() {
           />
         </View>
       </ScrollView>
-      <BottomNav active="Início" />
     </SafeAreaView>
   );
 }

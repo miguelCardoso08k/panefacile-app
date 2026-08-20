@@ -8,7 +8,7 @@ import { money, useMockData } from "@/src/data/mock-store";
 export default function CustomersScreen() {
   const { customers, customerBalance } = useMockData();
   return (
-    <AppScreen tab="Clientes">
+    <AppScreen>
       <Header title="Clientes" />
       <PageScroll>
         <SearchBox placeholder="Buscar cliente" />

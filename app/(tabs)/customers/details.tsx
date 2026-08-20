@@ -15,7 +15,8 @@ import {
 import { money, useMockData } from "@/src/data/mock-store";
 
 export default function CustomerDetailsScreen() {
-  const { id = "c1" } = useLocalSearchParams<{ id?: string }>();
+  const { id: requestedId } = useLocalSearchParams<{ id?: string }>();
+  const id = requestedId ?? "";
   const { customers, orders, customerBalance, orderTotal, deleteCustomer } =
     useMockData();
   const customer = customers.find((item) => item.id === id);
