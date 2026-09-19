@@ -13,12 +13,6 @@ module.exports = {
           light: "#E9F5EF",
           gold: "#D58A17",
           "gold-light": "#FFF4DF",
-          50: "#EAF4EE",
-          100: "#D6E9DC",
-          500: "#0B6B3A",
-          600: "#075C31",
-          700: "#064A29",
-          900: "#07351F",
         },
 
         success: {
@@ -61,7 +55,11 @@ module.exports = {
       },
 
       fontFamily: {
-        sans: ["Inter"],
+        inter: ["Inter_400Regular"],
+        "inter-medium": ["Inter_500Medium"],
+        "inter-semibold": ["Inter_600SemiBold"],
+        "inter-bold": ["Inter_700Bold"],
+        "inter-extrabold": ["Inter_800ExtraBold"],
       },
 
       fontSize: {
