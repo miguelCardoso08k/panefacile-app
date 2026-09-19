@@ -20,13 +20,20 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: "#8A918D",
         tabBarIcon: ({ color, focused, size }) => {
           const icons = tabIcons[route.name];
-          return <Ionicons color={color} name={focused ? icons.focused : icons.unfocused} size={size} />;
+          return (
+            <Ionicons
+              color={color}
+              name={focused ? icons.focused : icons.unfocused}
+              size={size}
+            />
+          );
         },
         tabBarLabelStyle: { fontSize: 9, fontWeight: "600" },
         tabBarStyle: {
           backgroundColor: "#FFFFFF",
           borderTopColor: "#E5E5E5",
-          paddingTop: 6,
+          paddingTop: 0,
+          paddingBottom: 0,
         },
       })}
     >
