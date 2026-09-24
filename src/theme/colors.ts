@@ -8,7 +8,10 @@ export const colors = {
     goldLight: "#FFF4DF",
   },
 
-  background: "#FDFEFE",
+  background: {
+    default: "#FDFEFE",
+    cream: "#FAF8F3",
+  },
 
   surface: {
     default: "#FFFFFF",

@@ -2,7 +2,7 @@ import { typography } from "@/src/theme";
 import { Text, TextProps } from "react-native";
 
 type Textvariant = keyof typeof typography;
-type TextTone =
+export type TextTone =
   | "primary"
   | "secondary"
   | "muted"
