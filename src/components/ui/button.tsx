@@ -64,7 +64,7 @@ type ButtonVariant = keyof typeof butttonVariants;
 type ButtonSize = keyof typeof buttonSizes;
 
 interface ButtonProps extends Omit<PressableProps, "children"> {
-  children: string;
+  children: string | ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
   isLoading?: boolean;
@@ -160,13 +160,17 @@ export function Button({
         <>
           {leftIcon && <View>{leftIcon}</View>}
 
-          <AppText
-            variant="label"
-            style={{ fontSize: fontSize.body }}
-            tone={currentVariant.textTone}
-          >
-            {children}
-          </AppText>
+          {children && typeof children !== "string" ? (
+            <View>{children}</View>
+          ) : (
+            <AppText
+              variant="label"
+              style={{ fontSize: fontSize.body }}
+              tone={currentVariant.textTone}
+            >
+              {children}
+            </AppText>
+          )}
 
           {rightIcon && <View>{rightIcon}</View>}
         </>

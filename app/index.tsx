@@ -39,7 +39,7 @@ export default function LoginScreen() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         className="flex-1"
         style={{
-          gap: spacing[16],
+          gap: spacing[12],
         }}
       >
         <View
@@ -48,14 +48,13 @@ export default function LoginScreen() {
         >
           <Image
             source={require("@/assets/images/logo2.png")}
-            style={{ width: 90, height: 150, marginLeft: -18 }}
+            style={{ width: 90, height: 180, marginLeft: -13 }}
           />
-          <View className="flex-1 justify-center" style={{ gap: spacing[1] }}>
+          <View className="flex-1 justify-center" style={{ gap: spacing[0] }}>
             <AppText
-              variant="screenTitle"
+              variant="display"
               style={{
                 color: colors.brand.primary,
-                fontSize: fontSize.screenTitle,
               }}
             >
               Pane{"\n"}Facile
@@ -67,7 +66,7 @@ export default function LoginScreen() {
         </View>
         <View>
           <AppText
-            variant="pageTitle"
+            variant="screenTitle"
             style={{
               color: colors.brand.primary,
               fontSize: fontSize.pageTitle,

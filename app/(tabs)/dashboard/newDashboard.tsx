@@ -1,10 +1,16 @@
-import { AppText } from "@/src/components/ui";
+import { AppText, Button } from "@/src/components/ui";
 import { colors, sizes, spacing } from "@/src/theme";
-import { Link } from "expo-router";
-import { View } from "react-native";
+import { useRouter } from "expo-router";
+import { Bell } from "lucide-react-native";
+import { Image, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function NewDashboard() {
+  const router = useRouter();
+
+  const handleBellPress = () => {
+    router.replace("/");
+  };
   return (
     <SafeAreaView
       className="flex-1"
@@ -16,18 +22,39 @@ export default function NewDashboard() {
       <View>
         <View className="flex-row justify-between items-center">
           <View className="flex-row items-center" style={{ gap: spacing[1] }}>
-            <AppText>IconLogo</AppText>
-            <AppText>Logo</AppText>
+            <Image
+              source={require("@/assets/images/logo2.png")}
+              style={{ width: 50, height: 60, paddingTop: -20 }}
+            />
+            <View style={{ gap: spacing[1] }}>
+              <AppText
+                variant="sectionTitle"
+                style={{ color: colors.brand.dark }}
+              >
+                PANEFACILE
+              </AppText>
+              <AppText
+                variant="label"
+                className="text-center"
+                style={{ color: colors.brand.gold }}
+              >
+                PADARIA
+              </AppText>
+            </View>
           </View>
           <View>
-            <Link href="../../">
-              <AppText>Notificações</AppText>
-            </Link>
+            <Button onPress={handleBellPress} size="sm" variant="ghost">
+              <Bell />
+            </Button>
           </View>
         </View>
         <View>
-          <AppText>Olá, Admin</AppText>
-          <AppText>Sábado, 8 de Junho de 2027</AppText>
+          <AppText variant="cardTitle" style={{ color: colors.brand.primary }}>
+            Olá, Admin! 👨‍🍳
+          </AppText>
+          <AppText variant="caption" tone="muted">
+            Sábado, 8 de Junho de 2027
+          </AppText>
         </View>
       </View>
       <View>
